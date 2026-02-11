@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>TANISHQ | Creative Developer</title>
+    <link rel="manifest" href="manifest.json">
+
+
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tanishq Dev">
+<link rel="apple-touch-icon" href="assets/images/favicon.webp">
+    <meta
+      name="description"
+      content="BCA Student at LNCT University building high-end digital experiences with Python & React."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://swayampurwar.vercel.app/"
+    />
+    <meta property="og:title" content="Tanishq | Creative Developer" />
+    <meta
+      property="og:description"
+      content="BCA Student building high-end digital experiences with Python & React."
+    />
+    <meta
+      property="og:image"
+      content="https://swayam.dev/assets/images/tanishq.webp"
+    />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta
+      property="twitter:url"
+      content="https://swayampurwar.vercel.app/"
+    />
+    <meta property="twitter:title" content="Swayam | Creative Developer" />
+    <meta
+      property="twitter:description"
+      content="BCA Student building high-end digital experiences with Python & React."
+    />
+    <meta
+      property="twitter:image"
+      content="https://swayam.dev/assets/images/swayampurwar.webp"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/webp" href="./assets/images/favicon.webp" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Syne:wght@400;700;800&family=Fira+Code:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* --- CRITICAL FAIL-SAFE CSS --- */
+      /* These styles ensure content is visible even if JS fails */
+
+      body {
+        background-color: #050505;
+        overflow-x: hidden;
+      }
+
+      /* Force visibility on hero text */
+      .hero-text {
+        opacity: 1 !important; /* Override any external hiding */
+        transform: none !important;
+        display: inline-block;
+        color: white; /* Ensure text isn't black-on-black */
+      }
+
+      /* Fix for "SWAYAM PURWAR" missing */
+      .hero-name {
+        font-size: clamp(3rem, 11vw, 10rem);
+        line-height: 0.9;
+        font-weight: 800;
+        margin: 0;
+        text-transform: uppercase;
+        font-family: "Syne", sans-serif;
+        color: #f0f0f0; /* Explicit white color */
+      }
+
+      /* Fix for "DEVELOPER" outline */
+      .outline-text {
+        -webkit-text-stroke: 1px white;
+        color: transparent !important;
+      }
+
+      /* Ensure hero container is visible */
+      #hero {
+        position: relative;
+        z-index: 10;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 10vw;
+      }
+
+      .hero-line {
+        overflow: hidden;
+        display: block;
+      }
+
+      /* Mobile Menu Fix */
+      .mobile-menu {
+        pointer-events: none; /* Let clicks pass through when hidden */
+      }
+      .mobile-menu.active {
+        pointer-events: all;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="crt-overlay"></div>
+    <canvas id="matrix-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 99999; pointer-events: none; opacity: 0; mix-blend-mode: screen;"></canvas>
+    <div id="ambient-glow"></div>
+    <div class="preloader-container">
+      <div class="loader-content">
+        <div class="start-prompt" style="opacity: 0;">[ PRESS ANY KEY TO INITIALIZE ]</div>
+        <div class="counter-wrap">
+          <span class="counter">0</span>
+          <span class="percent">%</span>
+        </div>
+        <div class="loader-text">INITIALIZING SYSTEM</div>
+      </div>
+      <div class="loader-meta top-left">TANISHQ.DEV</div>
+      <div class="loader-meta top-right">PORTFOLIO ©2026</div>
+      <div class="loader-meta bottom-left">LOADING ASSETS</div>
+      <div class="loader-meta bottom-right">PLEASE WAIT</div>
+    </div>
+
+    <div id="cursor" aria-hidden="true"></div>
+
+    <nav id="main-nav">
+      <a href="#" class="logo mouse-hover">TANISHQ.DEV</a>
+      <div class="nav-links" role="navigation">
+        <a href="#work" class="nav-item mouse-hover">Work</a>
+        <a href="about.html" class="nav-item mouse-hover">About</a>
+        <a href="#contact" class="nav-item mouse-hover">Contact</a>
+      </div>
+      <button class="menu-toggle mouse-hover" aria-label="Open Mobile Menu">
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </button>
+    </nav>
+
+    <div class="mobile-menu">
+      
+      <a href="#work" class="mobile-link">Work</a>
+      <a href="about.html" class="mobile-link">About</a>
+      <a href="#contact" class="mobile-link">Contact</a>
+    </div>
+
+    <main>
+      <section id="hero">
+        <div class="hero-line">
+          <h1
+            class="hero-text hero-name"
+            style="opacity: 1; transform: translate(0, 0)"
+          >
+            TANISHQ MANGLOR
+          </h1>
+        </div>
+        <div class="hero-line">
+          <span
+            class="hero-text outline-text"
+            style="opacity: 1; transform: translate(0, 0)"
+            >DEVELOPER</span
+          >
+
+        </div>
+       <p class="hero-sub">
+  Based in Bhopal, India &bull; <span id="live-clock">--:--:-- IST</span> &bull; Available for Freelance
+</p>
+
+        <div class="cv-wrapper">
+          <a
+            href="cv.html"
+           target="_blank"
+    rel="noopener noreferrer"
+            class="cv-btn mouse-hover"
+          >
+            <span>VIEW CV</span>
+            <svg class="cv-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+  <circle cx="12" cy="12" r="3" />
+</svg>
+          </a>
+        </div>
+      </section>
+
+      <section id="work">
+        <div class="project-preview-img" id="preview-img"></div>
+        <div class="section-header">
+          <span>SELECTED WORKS</span><span>(2025-2026)</span>
+        </div>
+
+        <a href="apple-music.html" class="project-link" data-img="./assets/images/apple-music-preview.webp">
+          <article class="project mouse-hover">
+            <h2>APPLE MUSIC APP</h2>
+            <div class="project-meta">
+              <p>iOS / UI Redesign</p>
+              <p>2025</p>
+            </div>
+          </article>
+        </a>
+
+        <a href="instagram.html" class="project-link" data-img="./assets/images/instagram-preview.webp">
+          <article class="project mouse-hover">
+            <h2>INSTAGRAM APP</h2>
+            <div class="project-meta">
+              <p>Full Stack Clone</p>
+              <p>2026</p>
+            </div>
+          </article>
+        </a>
+
+        <div class="section-header upcoming">
+          <span>UPCOMING</span><span>(IN LABS)</span>
+        </div>
+
+        <a href="kite.html" class="project-link" data-img="./assets/images/kite-preview.webp">
+          <article class="project mouse-hover">
+            <h2>KITE TRADING APP</h2>
+            <div class="project-meta">
+              <p>FinTech / WebSockets</p>
+              <p>Coming Soon</p>
+            </div>
+          </article>
+        </a>
+      </section>
+
+      <section id="about">
+        <div class="about-img reveal-container">
+          <div class="reveal-curtain"></div>
+          <img
+            src="./assets/images/tanishq.webp"
+            width="600"
+            height="800"
+            loading="lazy"
+            alt="Tanishq Manglor"
+          />
+        </div>
+        <div class="about-text">
+          <h2>Code meets<br />Creativity.</h2>
+          <p>
+            I am Tanishq , a developer focused on building high-end digital
+            experiences using Python, React, and GSAP.
+          </p>
+          <a href="about.html" class="footer-link mouse-hover">Read More</a>
+        </div>
+      </section>
+
+      <section class="marquee-section" aria-hidden="true">
+        <div class="marquee-content">
+          <span
+            >REACT &bull; GSAP &bull; UI/UX &bull; FIGMA &bull; THREE.JS &bull;
+            NODE.JS &bull; MONGODB &bull;
+          </span>
+          <span
+            >REACT &bull; GSAP &bull; UI/UX &bull; FIGMA &bull; THREE.JS &bull;
+            NODE.JS &bull; MONGODB &bull;
+          </span>
+        </div>
+      </section>
+    </main>
+
+    <footer id="contact">
+      <div class="footer-split">
+        <div class="footer-left"> 
+          <h2 class="footer-title">LET'S WORK<br />TOGETHER</h2>
+          <p>Have a project in mind? Drop me a line.</p>
+          <a
+            href="mailto:tanishqmanglor@gmail.com"
+            class="mouse-hover contact-email"
+            >hello@tanishq.dev</a
+          >
+        </div>
+
+        <div class="footer-right">
+          <form
+            action="https://formspree.io/f/mqedawav"
+            method="POST"
+            id="portfolio-form"
+          >
+          <input type="hidden" name="_next" value="https://swayampurwar.vercel.app/success.html" />
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                placeholder="Your Name"
+              />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                placeholder="Your Email"
+              />
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                required
+                placeholder="Tell me about your project"
+              ></textarea>
+            </div>
+            <button type="submit" class="submit-btn mouse-hover">
+              SEND MESSAGE
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+       <span>&copy; <span id="year"></span> Tanishq.</span>
+        <div class="socials">
+          <a
+            href="https://www.instagram.com/tanishqmanglor?igsh=ODZiZG8ybzBwcHA5&utm_source=qr"
+            target="_blank"
+            rel="noopener"
+            class="mouse-hover"
+            >Instagram</a
+          >
+          <a
+            href="https://www.linkedin.com/in/tanishq-manglor-327732315?utm_source=share_via&utm_content=profile&utm_medium=member_ios"
+            target="_blank"
+            rel="noopener"
+            class="mouse-hover"
+            >LinkedIn</a
+          >
+          <a
+            href="https://github.com/tanishqmanglor/Portfolio-.git"
+            target="_blank"
+            rel="noopener"
+            class="mouse-hover"
+            >GitHub</a
+          >
+        </div>
+      </div>
+    </footer>
+    <div id="cmd-terminal">
+    <div class="cmd-header">
+        <span>TANISHQ.OS [VERSION 1.0]</span>
+        <span>ADMIN ACCESS: GRANTED</span>
+        <button id="cmd-close-mobile" style="background:none; border:none; color:inherit; font-family:inherit; cursor:pointer;">[X]</button>
+    </div>
+    <div class="cmd-output" id="cmd-output">
+        Type 'help' for a list of commands...
+    </div>
+    <div class="cmd-input-line">
+        <span class="cmd-prompt">user@tanishq:~$</span>
+        <input type="text" id="cmd-input" autocomplete="off" spellcheck="false">
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+
+    <script src="script.js" defer></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // 1. Manually ensure Hero Text is visible after 3.5 seconds (max loader time)
+        setTimeout(() => {
+          const heroTexts = document.querySelectorAll(".hero-text");
+          heroTexts.forEach((el) => {
+            el.style.opacity = "1";
+            el.style.transform = "translate(0,0)";
+          });
+
+          // Force hide preloader if it gets stuck
+          const preloader = document.querySelector(".preloader-container");
+          if (preloader) {
+            gsap.to(preloader, {
+              yPercent: -100,
+              duration: 1,
+              ease: "power2.inOut",
+              onComplete: () => (preloader.style.display = "none"),
+            });
+          }
+        }, 3500);
+
+        // 2. Animate Hero Text (From Hidden)
+        // This runs if GSAP loads correctly
+        gsap.fromTo(
+          ".hero-text",
+          { y: 100, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1.2,
+            stagger: 0.1,
+            ease: "power4.out",
+            delay: 3,
+          },
+        );
+      });
+
+
+      
+    
+  const form = document.getElementById("portfolio-form");
+  
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault(); // Stop standard submission
+    const submitBtn = form.querySelector(".submit-btn");
+    submitBtn.innerText = "SENDING...";
+
+    const formData = new FormData(form);
+    
+    // Add your Formspark URL here
+    await fetch("https://formspree.io/f/mqedawav", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(Object.fromEntries(formData)),
+    });
+
+    // Manually redirect to success page
+    window.location.href = "success.html"; 
+  });
+</script>
+  </body>
+</html>

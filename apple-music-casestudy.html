@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Apple Music Redesign | Case Study</title>
+    
+    <meta name="description" content="A UI/UX case study redesigning Apple Music with glassmorphism and fluid animations.">
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/webp" href="favicon.webp" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;900&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+
+    <style>
+      /* --- PAGE SPECIFIC STYLES --- */
+      body {
+        background-color: var(--bg-color);
+        overflow-x: hidden;
+      }
+
+      /* AMBIENT GLOW */
+      .ambient-glow {
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60vw;
+        height: 60vw;
+        background: radial-gradient(circle, rgba(252, 60, 68, 0.15) 0%, rgba(0,0,0,0) 70%);
+        filter: blur(80px);
+        z-index: -1;
+        pointer-events: none;
+        animation: pulse-glow 10s ease-in-out infinite alternate;
+      }
+
+      @keyframes pulse-glow {
+        0% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.8); }
+        100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); }
+      }
+      
+      @media (max-width: 768px) {
+        .nav-links { display: flex !important; gap: 1rem; }
+        .nav-item { font-size: 0.8rem; }
+        nav, nav.scrolled { padding: 1.5rem 2rem !important; }
+        .ambient-glow { width: 100vw; height: 100vh; top: 40%; }
+      }
+
+      .cs-hero {
+        padding: 180px 10vw 10vh; 
+        min-height: auto; 
+        display: block; 
+      }
+
+      .cs-title {
+        font-size: clamp(3rem, 9vw, 9rem);
+        line-height: 1.1;
+        font-family: "Inter", sans-serif;
+        font-weight: 900;
+        letter-spacing: -0.04em;
+        margin-bottom: 3rem;
+        color: #fc3c44;
+      }
+
+      .outline-sub {
+        font-family: "Syne", sans-serif;
+        font-weight: 800;
+        color: transparent;
+        -webkit-text-stroke: 1px white;
+        display: block;
+        opacity: 0.9;
+        margin-top: 10px;
+      }
+
+      .cs-meta {
+        display: flex;
+        gap: 4rem;
+        margin-bottom: 4rem;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        padding-top: 2rem;
+        /* Visible by default */
+        opacity: 1; 
+      }
+
+      .meta-item h4 {
+        font-size: 0.8rem;
+        color: #888;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+      }
+      .meta-item p { color: #eee; font-size: 1.1rem; font-weight: 400; }
+
+      .cs-content {
+        padding: 0 10vw 10vh;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .cs-section {
+        margin-bottom: 12rem;
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 5rem;
+        align-items: start;
+      }
+
+      /* GLASS CARD */
+      .glass-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 2.5rem;
+        border-radius: 16px;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .glass-card::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+          opacity: 0.05;
+          pointer-events: none;
+      }
+
+      .cs-text h3 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        color: white;
+        font-family: "Syne", sans-serif;
+      }
+
+      .cs-text p {
+        color: #b0b0b0;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+        font-size: 1.05rem;
+      }
+
+      .cs-image {
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        border: 1px solid rgba(255,255,255,0.1);
+      }
+      
+      .cs-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.7s ease;
+      }
+      .cs-image:hover img { transform: scale(1.03); }
+
+      /* CSS WIREFRAME GRAPHIC */
+      .wireframe-box {
+        width: 100%;
+        height: 400px;
+        background: #0f0f0f;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      
+      .wf-phone {
+          width: 200px;
+          height: 340px;
+          border: 2px solid #333;
+          border-radius: 20px;
+          padding: 15px;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          background: #050505;
+      }
+      .wf-header { width: 100%; height: 20px; display: flex; justify-content: space-between; margin-bottom: 10px; }
+      .wf-blob { width: 30px; height: 10px; background: #222; border-radius: 10px; }
+      .wf-art { width: 100%; height: 160px; background: linear-gradient(45deg, #222, #333); border-radius: 12px; }
+      .wf-lines { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+      .wf-line { height: 6px; background: #222; border-radius: 4px; width: 100%; }
+      .wf-line.short { width: 60%; }
+      .wf-controls { margin-top: auto; display: flex; justify-content: center; gap: 15px; }
+      .wf-btn { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #333; }
+
+      .cs-tags {
+        display: flex;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+      }
+
+      .cs-tag {
+        padding: 8px 16px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 50px;
+        font-size: 0.8rem;
+        color: #ccc;
+        border: 1px solid transparent;
+        transition: 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .cs-tag:hover {
+          border-color: #fc3c44;
+          color: white;
+          background: rgba(252, 60, 68, 0.15);
+      }
+
+      @media (max-width: 1024px) {
+        .cs-section { grid-template-columns: 1fr; gap: 3rem; }
+        .cs-meta { flex-wrap: wrap; gap: 2rem; }
+      }
+      
+      @media (max-width: 768px) {
+        .cs-hero { padding: 180px 6vw 5vh; }
+        .cs-title { font-size: 14vw; margin-bottom: 2rem; }
+        .cs-content { padding: 0 6vw 10vh; }
+        .glass-card { padding: 1.5rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="ambient-glow"></div>
+    <div id="cursor" aria-hidden="true"></div>
+    <div class="ambient-glow"></div>
+
+    <nav>
+      <a href="index.html" class="logo mouse-hover">SP.DEV</a>
+      <div class="nav-links">
+        <a href="apple-music.html" class="nav-item mouse-hover">Back to Project</a>
+      </div>
+    </nav>
+
+    <main>
+      <header class="cs-hero">
+        <h1 class="cs-title">
+          APPLE MUSIC<br /><span class="outline-sub">CASE STUDY</span>
+        </h1>
+        
+        <div class="cs-meta">
+          <div class="meta-item">
+            <h4>Timeline</h4>
+            <p>3 Weeks</p>
+          </div>
+          <div class="meta-item">
+            <h4>Role</h4>
+            <p>Product Designer</p>
+          </div>
+          <div class="meta-item">
+            <h4>Deliverables</h4>
+            <p>Hi-Fi Prototypes</p>
+          </div>
+          <div class="meta-item">
+            <h4>Tools</h4>
+            <p>Figma & Protopie</p>
+          </div>
+        </div>
+      </header>
+
+      <div class="cs-content">
+        <section class="cs-section">
+          <div class="cs-text glass-card">
+            <h3>01. Discovery</h3>
+            <p>
+              While Apple Music is an industry leader, user feedback often points to a "sterile" interface. 
+              The disconnect between the vibrant album art and the plain white/dark UI creates friction in the immersion.
+            </p>
+            <p>
+              <strong>The Goal:</strong> To bridge the gap between utility and emotion. I wanted the interface to feel 
+              like a liquid extension of the music itself, rather than just a container.
+            </p>
+            <div class="cs-tags">
+                <span class="cs-tag mouse-hover">User Research</span>
+                <span class="cs-tag mouse-hover">Heuristic Analysis</span>
+            </div>
+          </div>
+          
+          <div class="cs-image">
+             <div class="wireframe-box">
+                <div class="wf-phone">
+                    <div class="wf-header">
+                        <div class="wf-blob" style="width: 20px"></div>
+                        <div class="wf-blob"></div>
+                    </div>
+                    <div class="wf-art"></div>
+                    <div class="wf-lines">
+                        <div class="wf-line"></div>
+                        <div class="wf-line short"></div>
+                    </div>
+                    <div class="wf-controls">
+                        <div class="wf-btn"></div>
+                        <div class="wf-btn" style="transform: scale(1.2); border-color: #666"></div>
+                        <div class="wf-btn"></div>
+                    </div>
+                </div>
+             </div>
+          </div>
+        </section>
+
+        <section class="cs-section">
+          <div class="cs-text glass-card">
+            <h3>02. The Solution</h3>
+            <p>
+              I introduced a <strong>Dynamic Glassmorphism System</strong>. The background doesn't just change color; 
+              it extracts the dominant palette from the album art and applies a heavy gaussian blur (80px+), creating a 
+              living, breathing backdrop.
+            </p>
+            <p>
+              <strong>Key Interactions:</strong>
+            </p>
+            <ul style="color:#b0b0b0; list-style-position: inside; line-height: 1.8; margin-bottom: 1.5rem">
+                <li>Gestural Swipe for "Now Playing" queue.</li>
+                <li>Haptic feedback on all micro-interactions.</li>
+                <li>Lyrics view that floats in 3D space.</li>
+            </ul>
+            
+            <div class="cs-tags">
+                <span class="cs-tag mouse-hover">Visual Design</span>
+                <span class="cs-tag mouse-hover">Motion</span>
+            </div>
+          </div>
+           
+           <div class="cs-image">
+             <img src="https://www.apple.com/v/apple-music/af/images/shared/og__ckjrh2mu8b2a_image.png" 
+                  alt="Final UI design showing glassmorphism player"
+                  loading="lazy">
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer id="contact">
+      <div class="footer-split">
+        <div class="footer-left">
+          <h2 class="footer-title">NEXT<br />PROJECT</h2>
+          <p style="color: #888; margin-bottom: 2rem">Explore the full-stack Instagram Clone.</p>
+          <a href="instagram.html" class="mouse-hover" style="text-decoration: underline">View Instagram App</a>
+        </div>
+        <div class="footer-right">
+    <p style="color: #666">&copy; <span id="year"></span> Swayam.</p>
+</div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+    <script src="script.js" defer></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+          const tl = gsap.timeline();
+
+          // Title Animation (From visible to visible)
+          gsap.from(".cs-title", {
+            y: 100, opacity: 0, duration: 1.5, ease: "power4.out", delay: 0.2
+          });
+
+          // Metadata Animation
+          gsap.from(".cs-meta", {
+             y: 30, opacity: 0, duration: 1, ease: "power3.out", delay: 0.5
+          });
+          
+          // Scroll-triggered Image Reveals
+          // Using 'gsap.from' because element is visible in CSS by default
+          const sections = document.querySelectorAll(".cs-section");
+          sections.forEach(section => {
+              const text = section.querySelector(".cs-text");
+              const img = section.querySelector(".cs-image");
+
+              if(text) {
+                  gsap.from(text, {
+                    scrollTrigger: { trigger: section, start: "top 85%" },
+                    y: 50, opacity: 0, duration: 1, ease: "power3.out"
+                  });
+              }
+
+              if(img) {
+                  gsap.from(img, {
+                    scrollTrigger: { trigger: section, start: "top 85%" },
+                    y: 50, opacity: 0, duration: 1.2, delay: 0.2, ease: "power3.out"
+                  });
+              }
+          });
+      });
+    </script>
+  </body>
+</html>

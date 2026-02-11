@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kite Trading | System Initializing...</title>
+    <meta name="description" content="A high-frequency trading platform clone currently in development, featuring WebSockets and real-time data visualization.">
+
+    <link rel="icon" type="image/webp" href="./assets/images/favicon.webp" />
+    <link rel="stylesheet" href="style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+
+    <style>
+      /* --- PAGE SPECIFIC STYLES --- */
+      :root {
+        --brand-blue: #3772ff;
+        --brand-orange: #ff5722;
+        --brand-green: #00d1b2;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        overflow-x: hidden;
+      }
+
+      /* 1. TECH GRID BACKGROUND */
+      .grid-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(rgba(55, 114, 255, 0.05) 1px, transparent 1px),
+                          linear-gradient(90deg, rgba(55, 114, 255, 0.05) 1px, transparent 1px);
+        background-size: 40px 40px;
+        z-index: -2;
+        pointer-events: none;
+      }
+
+      /* 2. DATA ORB */
+      .orb {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60vw;
+        height: 60vw;
+        background: radial-gradient(circle, rgba(55, 114, 255, 0.1) 0%, rgba(0,0,0,0) 70%);
+        filter: blur(80px);
+        z-index: -1;
+        pointer-events: none;
+        animation: pulse 4s infinite alternate ease-in-out;
+      }
+
+      @keyframes pulse {
+          0% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.9); }
+          100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.1); }
+      }
+
+      /* --- HERO SECTION --- */
+      .cs-hero {
+        padding: 180px 10vw 10vh; /* Desktop Padding */
+        min-height: 85vh;
+        display: block;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        position: relative;
+      }
+
+      /* GLITCH TITLE */
+      .cs-title {
+        font-size: clamp(3rem, 10vw, 8rem);
+        line-height: 0.95;
+        font-family: "Syne", sans-serif;
+        font-weight: 800;
+        margin-bottom: 3rem;
+        color: white;
+        position: relative;
+        width: fit-content;
+      }
+      
+      .cs-title::after {
+          content: "KITE TRADING";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: var(--bg-color);
+          color: var(--brand-blue);
+          mix-blend-mode: overlay;
+          opacity: 0;
+          animation: glitch 3s infinite;
+      }
+
+      @keyframes glitch {
+          0% { clip-path: inset(50% 0 30% 0); transform: translate(-2px, 2px); opacity: 0.5; }
+          5% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -2px); opacity: 0.5; }
+          10% { clip-path: inset(80% 0 5% 0); transform: translate(2px, 2px); opacity: 0.5; }
+          15% { opacity: 0; }
+          100% { opacity: 0; }
+      }
+
+      /* TERMINAL BOX */
+      .terminal-box {
+        background: rgba(10, 10, 10, 0.8);
+        border: 1px solid #333;
+        border-radius: 8px;
+        padding: 1.5rem;
+        font-family: 'Fira Code', monospace;
+        font-size: 0.9rem;
+        color: #ccc;
+        max-width: 600px;
+        width: 100%;
+        margin-bottom: 3rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        backdrop-filter: blur(10px);
+      }
+
+      .terminal-header {
+          display: flex;
+          gap: 6px;
+          margin-bottom: 1rem;
+          opacity: 0.5;
+      }
+      .dot { width: 10px; height: 10px; border-radius: 50%; background: #555; }
+      .dot.red { background: #ff5f56; }
+      .dot.yellow { background: #ffbd2e; }
+      .dot.green { background: #27c93f; }
+
+      .cmd-line {
+          display: block;
+          margin-bottom: 0.5rem;
+          white-space: pre-wrap;
+          word-break: break-word;
+      }
+      
+      .cursor-blink {
+          display: inline-block;
+          width: 8px;
+          height: 15px;
+          background: var(--brand-blue);
+          animation: blink 1s infinite;
+          vertical-align: middle;
+      }
+      @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+      .text-green { color: var(--brand-green); }
+      .text-blue { color: var(--brand-blue); }
+      .text-orange { color: var(--brand-orange); }
+
+      .cs-intro {
+        font-size: clamp(1rem, 2vw, 1.25rem);
+        max-width: 600px;
+        color: #888;
+        line-height: 1.6;
+      }
+
+      /* --- TECH STACK GRID --- */
+      .tech-preview {
+        padding: 10vh 10vw;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+      }
+
+      .tech-card {
+        background: rgba(255,255,255,0.02);
+        padding: 2.5rem;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        transition: 0.3s;
+      }
+      
+      .tech-card:hover {
+          border-color: var(--brand-blue);
+          background: rgba(55, 114, 255, 0.05);
+      }
+
+      .tech-card h3 {
+        color: #fff;
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+        font-family: 'Syne', sans-serif;
+      }
+
+      .tech-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .tech-pill {
+        font-size: 0.85rem;
+        padding: 8px 16px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 50px;
+        color: #aaa;
+        cursor: default;
+        transition: 0.3s;
+      }
+      
+      .tech-pill:hover {
+          color: white;
+          border-color: #fff;
+      }
+
+      /* --- RESPONSIVE FIXES --- */
+      @media (max-width: 1024px) {
+          .cs-hero { padding: 160px 8vw 5vh; }
+      }
+
+      @media (max-width: 768px) {
+        .cs-hero { padding: 130px 1.5rem 5vh; }
+        .tech-preview { padding: 5vh 1.5rem; grid-template-columns: 1fr; gap: 2rem; }
+        
+        .cs-title { 
+            font-size: 11vw; 
+            margin-bottom: 2rem;
+            word-wrap: break-word; 
+        }
+        
+        .terminal-box { padding: 1rem; font-size: 0.8rem; }
+        .orb { width: 100vw; height: 100vw; opacity: 0.4; }
+        
+        /* FIX: FORCE BACK BUTTON VISIBLE ON MOBILE */
+        nav, nav.scrolled { padding: 1.5rem 2rem !important; }
+        .nav-links { display: flex !important; }
+        .menu-toggle { display: none !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="ambient-glow"></div>
+    <div id="cursor" aria-hidden="true"></div>
+    <div class="grid-bg"></div>
+    <div class="orb"></div>
+
+    <nav>
+      <a href="index.html" class="logo mouse-hover">SP.DEV</a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-item mouse-hover">Back to Home</a>
+      </div>
+    </nav>
+
+    <main>
+        <section class="cs-hero">
+            <div class="terminal-box">
+                <div class="terminal-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                </div>
+                <div class="terminal-body">
+                    <span class="cmd-line">><span class="text-blue"> git clone</span> kite-trading-engine</span>
+                    <span class="cmd-line">><span class="text-orange"> npm install</span> socket.io-client</span>
+                    <span class="cmd-line">> Establishing WebSocket Handshake... <span class="text-green">[OK]</span></span>
+                    <span class="cmd-line">> Fetching NIFTY 50 Live Data... <span class="text-green">[200 OK]</span></span>
+                    <span class="cmd-line">> System Status: <span class="text-blue">BUILDING...</span><span class="cursor-blink"></span></span>
+                </div>
+            </div>
+    
+            <h1 class="cs-title">
+              KITE<br /><span style="color: transparent; -webkit-text-stroke: 1px white;">TRADING</span>
+            </h1>
+            
+            <p class="cs-intro">
+              A high-frequency trading platform clone engineered for speed. 
+              Currently implementing WebSocket pipelines for real-time stock data 
+              and sub-millisecond order execution.
+            </p>
+        </section>
+    
+        <section class="tech-preview">
+            <div class="tech-card">
+                <h3>Backend Architecture</h3>
+                <div class="tech-list">
+                    <span class="tech-pill mouse-hover">Node.js</span>
+                    <span class="tech-pill mouse-hover">WebSockets (Socket.io)</span>
+                    <span class="tech-pill mouse-hover">MongoDB Timeseries</span>
+                    <span class="tech-pill mouse-hover">Redis</span>
+                </div>
+            </div>
+            <div class="tech-card">
+                <h3>Frontend Experience</h3>
+                <div class="tech-list">
+                    <span class="tech-pill mouse-hover">React 19</span>
+                    <span class="tech-pill mouse-hover">Lightweight Charts</span>
+                    <span class="tech-pill mouse-hover">TailwindCSS</span>
+                    <span class="tech-pill mouse-hover">Framer Motion</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact">
+      <div class="footer-split">
+        <div class="footer-left">
+          <h2 class="footer-title">STAY<br />TUNED</h2>
+          <p style="color: #888; margin-bottom: 2rem">This project will be live soon.</p>
+          <a href="mailto:tanishqmanglor@gmail.com" class="mouse-hover" style="text-decoration: underline">hello@tanishq.dev</a>
+        </div>
+       <div class="footer-right">
+    <p style="color: #666">&copy; <span id="year"></span> Tanishq.</p>
+</div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+          gsap.set(".terminal-box", { opacity: 0, y: 20 });
+          gsap.set(".cmd-line", { opacity: 0 });
+          gsap.set(".cs-title", { opacity: 0, y: 50 });
+          gsap.set(".cs-intro", { opacity: 0, y: 20 });
+          gsap.set(".tech-card", { opacity: 0, y: 30 });
+
+          const tl = gsap.timeline();
+
+          tl.to(".terminal-box", {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power3.out"
+          });
+
+          tl.to(".cmd-line", {
+              opacity: 1,
+              stagger: 0.6,
+              duration: 0.1,
+              ease: "none"
+          });
+
+          tl.to(".cs-title", {
+            y: 0, opacity: 1, duration: 1, ease: "power3.out"
+          }, "-=1.0"); 
+
+          tl.to(".cs-intro", {
+            y: 0, opacity: 1, duration: 1, ease: "power3.out"
+          }, "-=0.8");
+    
+          tl.to(".tech-card", {
+            y: 0, opacity: 1, duration: 0.8, stagger: 0.2, ease: "power3.out"
+          }, "-=0.6");
+      });
+    </script>
+  </body>
+</html>

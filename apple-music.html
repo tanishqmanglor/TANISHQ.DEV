@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Stream  | Project Details</title>
+    
+    <meta name="description" content="UI/UX case study and redesign of Apple Music focusing on glassmorphism and fluid animations.">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/webp" href="favicon.webp">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=Syne:wght@400;700;800&display=swap" rel="stylesheet"/>
+    
+    <style>
+        /* PAGE SPECIFIC OVERRIDES */
+        body { background-color: var(--bg-color); overflow-x: hidden; }
+        
+        /* --- AMBIENT GLOW (Apple Red) --- */
+        .ambient-glow {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(252, 60, 68, 0.15) 0%, rgba(0,0,0,0) 70%);
+            filter: blur(80px);
+            z-index: -1;
+            pointer-events: none;
+            animation: pulse-glow 10s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse-glow {
+            0% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.8); }
+            100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        /* Mobile Nav Override */
+        @media (max-width: 768px) {
+            .nav-links { display: flex !important; gap: 1rem; }
+            .nav-item { font-size: 0.8rem; }
+            nav, nav.scrolled { padding: 1.5rem 2rem !important; }
+            .ambient-glow { width: 100vw; height: 100vh; top: 40%; }
+        }
+
+        .p-hero { 
+            /* Fixed Block Layout */
+            padding: 180px 10vw 5vh; 
+            min-height: 100vh;
+            display: block; 
+        }
+        
+        .p-title { 
+            font-size: clamp(3rem, 9vw, 9rem);
+            line-height: 1.1; 
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            margin-bottom: 4rem; 
+            color: #fc3c44; 
+            /* Visible by default */
+        }
+
+        .outline-sub {
+            font-family: 'Syne', sans-serif;
+            color: transparent;
+            -webkit-text-stroke: 1px white;
+            font-weight: 800;
+            opacity: 0.9;
+            display: block;
+            margin-top: 10px;
+        }
+        
+        .p-img-container {
+            width: 100%;
+            height: 70vh;
+            overflow: hidden;
+            margin-bottom: 5rem;
+            position: relative;
+            border-radius: 12px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .p-img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            transform: scale(1.2); 
+        }
+
+        .p-content { 
+            padding: 0 10vw 10vh; 
+            display: grid; 
+            grid-template-columns: 1.5fr 1fr; 
+            gap: 6rem; 
+        }
+
+        /* GLASS CARD */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 2.5rem;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glass-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.05;
+            pointer-events: none;
+        }
+
+        .p-desc h3 { font-size: 2rem; margin-bottom: 2rem; color: white; font-family: 'Syne', sans-serif; }
+        .p-desc p { color: #b0b0b0; line-height: 1.8; margin-bottom: 2rem; font-size: 1.1rem; }
+        
+        .btn-group { margin-top: 3rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+        
+        .btn {
+            padding: 15px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            display: inline-block;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: white;
+            transition: 0.3s;
+            background: transparent;
+            white-space: nowrap;
+            cursor: none;
+        }
+        .btn:hover {
+            background: white;
+            color: black;
+            border-color: white;
+        }
+
+        .p-info h4 { color: #888; font-size: 0.8rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+        .p-info ul { list-style: none; margin-bottom: 2rem; }
+        .p-info li { margin-bottom: 0.2rem; font-size: 1.1rem; color: #eee; font-weight: 400; }
+
+        @media (max-width: 1024px) {
+            .p-hero { padding: 150px 6vw 5vh; }
+            .p-content { padding: 0 6vw 10vh; gap: 4rem; }
+            .p-img-container { height: 50vh; }
+        }
+
+        @media (max-width: 768px) {
+            .p-hero { padding: 140px 6vw 2vh; }
+            
+            /* FIX: Reduced from 11vw to 9vw for more breathing room */
+            .p-title { font-size: 9vw; margin-bottom: 2rem; }
+            
+            .p-img-container { height: 40vh; margin-bottom: 3rem; }
+            .p-content { grid-template-columns: 1fr; gap: 3rem; padding: 0 6vw 8vh; }
+            .btn { width: 100%; text-align: center; }
+            .glass-card { padding: 1.5rem; }
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="ambient-glow"></div>
+
+    <div id="cursor" aria-hidden="true"></div>
+    <div class="ambient-glow"></div>
+
+    <nav>
+        <a href="index.html" class="logo mouse-hover">SP.DEV</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-item mouse-hover">Back to Home</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="p-hero">
+            <h1 class="p-title">
+                APPLE MUSIC<br>
+                <span class="outline-sub">REDESIGN</span>
+            </h1>
+            
+            <div class="p-img-container">
+                <img src="https://www.apple.com/v/apple-music/af/images/shared/og__ckjrh2mu8b2a_image.png" 
+                     class="p-img" 
+                     alt="Apple Music iOS interface redesign showcasing glassmorphism"
+                     fetchpriority="high">
+            </div>
+            
+            <div class="p-content">
+                <article class="p-desc glass-card">
+                    <h3>The Vision</h3>
+                    <div>
+                        <p>Music apps often feel cluttered. This project was a UI/UX case study aimed at simplifying the Apple Music experience while introducing fluid, gesture-based interactions.</p>
+                        <p>I focused on "Glassmorphism" and dynamic color extraction, where the interface adapts to the album art in real-time. The result is a cleaner, more immersive listening experience.</p>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <a href="apple-music-casestudy.html" class="btn mouse-hover">View Case Study</a>
+                        <a href="https://github.com/tanishqmanglor/song-steam.git" class="btn mouse-hover">GitHub Code</a>
+                    </div>
+                </article>
+                
+                <aside class="p-info">
+                    <h4>Role</h4>
+                    <ul><li>UI/UX Researcher</li><li>Visual Designer</li></ul>
+                    
+                    <h4>Tools Used</h4>
+                    <ul><li>Figma</li><li>Spline 3D</li><li>Protopie</li></ul>
+                    
+                    <h4>Year</h4>
+                    <ul><li>2025</li></ul>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact">
+        <div class="footer-split">
+            <div class="footer-left">
+                <h2 class="footer-title">LET'S WORK<br />TOGETHER</h2>
+                <p style="color: #888; margin-bottom: 2rem">Have a project in mind? Drop me a line.</p>
+                <a href="mailto:tanishqmanglor@gmail.com" class="mouse-hover" style="text-decoration: underline">hello@tanishq.dev</a>
+            </div>
+            <div class="footer-right">
+                <p style="color: #666; font-size: 0.9rem;">(Contact Form available on Home Page)</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; <span id="year"></span> Tanishq.</span>
+            <div class="socials">
+                <a href="https://www.instagram.com/tanishqmanglor?igsh=ODZiZG8ybzBwcHA5&utm_source=qr" class="mouse-hover" target="_blank" rel="noopener">Instagram</a>
+                <a href="https://www.linkedin.com/in/tanishq-manglor-327732315?utm_source=share_via&utm_content=profile&utm_medium=member_ios" class="mouse-hover" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="https://github.com/tanishqmanglor/Portfolio-.git" class="mouse-hover" target="_blank" rel="noopener">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js" defer></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+    <script src="script.js" defer></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+          const tl = gsap.timeline();
+
+          // Title Entrance (Using .from ensures visible end state)
+          gsap.from(".p-title", {
+            y: 100, opacity: 0, duration: 1.5, ease: "power4.out", delay: 0.2
+          });
+
+          // Image Reveal
+          gsap.from(".p-img-container", {
+             scaleY: 0, transformOrigin: "bottom", duration: 1.2, ease: "power4.inOut", delay: 0.4
+          });
+
+          // Text Stagger
+          gsap.from(".p-desc, .p-info", {
+            y: 50, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out", delay: 0.8
+          });
+
+          // Parallax Image Effect
+          gsap.to(".p-img", {
+            yPercent: 20,
+            ease: "none",
+            scrollTrigger: {
+              trigger: ".p-img-container",
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          });
+      });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Tanishq | Creative Developer</title>
+    <meta name="description" content="Learn about Tanishq, a creative developer specializing in React and MongoDB, bridging the gap between design and logic.">
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/webp" href="favicon.webp" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet"/>
+
+    <style>
+      /* --- PAGE SPECIFIC STYLES --- */
+      body { background-color: var(--bg-color); overflow-x: hidden; }
+
+      /* 1. TECH GRID BACKGROUND */
+      .grid-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 40px 40px;
+        z-index: -2;
+        pointer-events: none;
+      }
+
+      /* 2. AMBIENT ORBS */
+      .orb {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(90px);
+        z-index: -1;
+        opacity: 0.4;
+        animation: float 15s infinite alternate ease-in-out;
+      }
+      .orb-1 {
+        top: 10%; left: 10%; width: 40vw; height: 40vw;
+        background: radial-gradient(circle, #00d2ff, transparent 60%);
+      }
+      .orb-2 {
+        bottom: 10%; right: 5%; width: 50vw; height: 50vw;
+        background: radial-gradient(circle, #9d50bb, transparent 60%);
+        animation-delay: -5s;
+      }
+      
+      @keyframes float {
+        0% { transform: translate(0, 0) scale(1); }
+        100% { transform: translate(30px, -30px) scale(1.1); }
+      }
+
+      /* HERO SECTION */
+      .a-hero {
+        padding: 180px 10vw 10vh; /* Fixed Padding */
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .a-title {
+        font-size: clamp(3rem, 10vw, 10rem);
+        line-height: 0.9;
+        font-family: "Syne", sans-serif;
+        color: #f0f0f0;
+        margin-bottom: 2rem;
+        text-transform: uppercase;
+        mix-blend-mode: overlay;
+        /* Removed opacity: 0 to prevent permanent invisibility */
+      }
+
+      .a-subtitle {
+        font-size: 1.2rem;
+        color: #aaa;
+        max-width: 600px;
+        line-height: 1.6;
+        border-left: 1px solid #444;
+        padding-left: 20px;
+      }
+
+      /* BIO SECTION */
+      .bio-section {
+        padding: 0 10vw 10vh;
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 6rem;
+        align-items: start;
+        position: relative;
+      }
+
+      /* 3D PROFILE CARD */
+      .bio-img-wrapper {
+        width: 100%;
+        height: 60vh;
+        position: sticky;
+        top: 10vh;
+        perspective: 1000px;
+      }
+
+      .bio-card {
+        width: 100%;
+        height: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.1);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        transform: rotateY(5deg);
+        transition: transform 0.5s ease;
+      }
+      
+      .bio-card:hover {
+          transform: rotateY(0deg) scale(1.02);
+          border-color: rgba(255,255,255,0.3);
+      }
+
+      .bio-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: grayscale(100%) contrast(1.1);
+        transition: 0.7s ease;
+      }
+      .bio-card:hover .bio-img { filter: grayscale(0%); }
+
+      /* TEXT CONTENT */
+      .bio-text p {
+        font-size: 1.35rem;
+        line-height: 1.6;
+        color: #ccc;
+        margin-bottom: 3rem;
+        font-weight: 300;
+      }
+
+      .bio-text strong { color: white; font-weight: 600; }
+
+      /* INFO GRID */
+      .info-grid {
+        border-top: 1px solid rgba(255,255,255,0.1);
+        padding-top: 4rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        /* Removed opacity: 0 */
+      }
+
+      .info-col h3 {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      .info-item { margin-bottom: 3rem; }
+
+      .info-item h4 {
+        font-size: 1.2rem;
+        color: white;
+        font-family: "Syne", sans-serif;
+        margin-bottom: 1rem;
+      }
+      
+      .info-item p { color: #888; font-size: 1rem; margin-bottom: 0.5rem; }
+
+      /* TECH PILLS */
+      .tech-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: flex-start; /* Ensures pills don't stretch */
+      }
+      
+      .tech-pill {
+        display: inline-block; /* Forces proper rendering */
+        padding: 8px 16px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 50px;
+        font-size: 0.85rem;
+        color: #aaa;
+        transition: 0.3s;
+        white-space: nowrap; /* Prevents text breaking */
+      }
+      
+      .tech-pill:hover {
+          background: rgba(255,255,255,0.1);
+          border-color: white;
+          color: white;
+          transform: translateY(-2px);
+      }
+
+      @media (max-width: 1024px) {
+        .a-hero { padding: 160px 8vw 5vh; }
+        .bio-section { grid-template-columns: 1fr; gap: 4rem; }
+        .bio-img-wrapper { height: 50vh; position: relative; top: 0; transform: none; }
+        .bio-card { transform: none; }
+      }
+
+      @media (max-width: 768px) {
+        .a-hero { padding: 140px 6vw 5vh; }
+        .bio-section { padding: 0 6vw 10vh; }
+        .bio-text p { font-size: 1.1rem; }
+        .nav-links { display: flex !important; gap: 1rem; }
+        .nav-item { font-size: 0.8rem; }
+        nav, nav.scrolled { padding: 1.5rem 2rem !important; }
+        .info-grid { grid-template-columns: 1fr; gap: 2rem; }
+      }
+      /* --- MOBILE VISIBILITY FIX (Add to about.html style) --- */
+
+@media (max-width: 768px) {
+  /* Force Title Visibility */
+  .a-title {
+    font-size: 3rem !important; /* Smaller, readable size */
+    color: #ffffff !important;  /* Solid White */
+    mix-blend-mode: normal !important; /* Disable fancy blending */
+    opacity: 1 !important;
+    text-shadow: 0 0 10px rgba(0,0,0,0.5); /* Add shadow for contrast */
+    margin-top: 100px; /* Push down from top */
+  }
+
+  /* Force Subtitle Visibility */
+  .a-subtitle {
+    font-size: 1rem !important;
+    color: #cccccc !important; /* Light Grey */
+    opacity: 1 !important;
+    max-width: 100%;
+    margin-top: 1rem;
+    border-left: 2px solid #00d2ff; /* Blue accent line */
+  }
+
+  /* Fix the Hero spacing */
+  .a-hero {
+    padding: 120px 20px 50px !important;
+    justify-content: flex-start; /* Align to top */
+  }
+}
+    </style>
+  </head>
+  <body>
+    <div id="ambient-glow"></div>
+    <div id="cursor" aria-hidden="true"></div>
+    
+    <div class="grid-bg"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <nav>
+      <a href="index.html" class="logo mouse-hover">SP.DEV</a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-item mouse-hover">Back Home</a>
+      </div>
+    </nav>
+
+    <main>
+      <header class="a-hero">
+        <h1 class="a-title">
+          THE MIND<br /><span style="color: transparent; -webkit-text-stroke: 1px white">BEHIND</span>
+        </h1>
+        <p class="a-subtitle">
+          I craft digital experiences where design meets logic. Driven by precision, powered by code.
+        </p>
+      </header>
+
+      <section class="bio-section">
+        <div class="bio-img-wrapper">
+          <div class="bio-card">
+              <img src="./assets/images/tanishq.webp" 
+                   width="600" 
+                   height="800" 
+                   loading="lazy"
+                   alt="tanishq manglor - Creative Developer based in Bhopal"
+                   class="bio-img" />
+          </div>
+        </div>
+
+        <article class="bio-text">
+          <div class="bio-content-wrapper">
+            <p>Hello, I'm <strong>Tanishq</strong>. A creative developer based in Bhopal, India.</p>
+            <p>My journey started with a curiosity for how things work, leading me to pursue a <strong>BCA at LNCT University</strong>. I wanted to build interfaces that people could <em>feel</em>, not just use.</p>
+            <p>I specialize in <strong>React and MongoDB</strong>, bridging the gap between powerful backend logic and fluid frontend interactivity.</p>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-col">
+              <h3>Education</h3>
+              <div class="info-item">
+                <h4>LNCT University</h4>
+                <p>Bachelors in Computer Applications (BCA)</p>
+                <p style="color: #666">2023 - Present</p>
+              </div>
+            </div>
+
+            <div class="info-col">
+              <h3>Tech Stack</h3>
+              <div class="info-item">
+                <h4>Development</h4>
+                <div class="tech-container">
+                    <span class="tech-pill mouse-hover">React</span>
+                    <span class="tech-pill mouse-hover">JavaScript (ES6+)</span>
+                    <span class="tech-pill mouse-hover">GSAP</span>
+                    <span class="tech-pill mouse-hover">Three.js</span>
+                    <span class="tech-pill mouse-hover">Node.js</span>
+                    <span class="tech-pill mouse-hover">MongoDB</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <h4>Design</h4>
+                <div class="tech-container">
+                    <span class="tech-pill mouse-hover">Figma</span>
+                    <span class="tech-pill mouse-hover">UI/UX Principles</span>
+                    <span class="tech-pill mouse-hover">Motion Design</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer id="contact">
+      <div class="footer-split">
+        <div class="footer-left">
+          <h2 class="footer-title">LET'S WORK<br />TOGETHER</h2>
+          <p style="color: #888; margin-bottom: 2rem">Have a project in mind? Drop me a line.</p>
+          <a href="mailto:tanishqmanglor@gmail.com" class="mouse-hover" style="text-decoration: underline">hello@tanishq.dev</a>
+        </div>
+        <div class="footer-right">
+          <p style="color: #666; font-size: 0.9rem;">(Contact Form available on Home Page)</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; <span id="year"></span> Tanishq .</span>
+        <div class="socials">
+          <a href="https://www.instagram.com/tanishqmanglor?igsh=ODZiZG8ybzBwcHA5&utm_source=qr" target="_blank" rel="noopener" class="mouse-hover">Instagram</a>
+          <a href="https://www.linkedin.com/in/tanishq-manglor-327732315?utm_source=share_via&utm_content=profile&utm_medium=member_ios
+          " target="_blank" rel="noopener" class="mouse-hover">LinkedIn</a>
+          <a href="https://github.com/tanishqmanglor/Portfolio-.git" target="_blank" rel="noopener" class="mouse-hover">GitHub</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+    <script src="script.js" defer></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+          // FAIL-SAFE: If GSAP fails, content remains visible because we removed CSS opacity: 0
+          // JS will now manually set initial state
+          
+          const tl = gsap.timeline();
+          
+          // 1. Hero Text (Manually hide then reveal)
+          gsap.set(".a-title, .a-subtitle", { opacity: 0, y: 50 });
+          
+          tl.to(".a-title", {
+              y: 0, opacity: 1, duration: 1.5, ease: "power4.out", delay: 0.2
+          });
+          
+          tl.to(".a-subtitle", {
+              y: 0, opacity: 1, duration: 1.5, ease: "power3.out"
+          }, "-=1");
+
+          // 2. Profile Card
+          gsap.set(".bio-img-wrapper, .bio-card", { opacity: 0 });
+          
+          gsap.to(".bio-img-wrapper", {
+              scrollTrigger: { trigger: ".bio-section", start: "top 70%" },
+              opacity: 1, duration: 1, ease: "power3.out"
+          });
+
+          gsap.fromTo(".bio-card", 
+              { rotateY: 90, opacity: 0 },
+              { scrollTrigger: { trigger: ".bio-section", start: "top 70%" }, rotateY: 5, opacity: 1, duration: 1.5, ease: "power3.out" }
+          );
+          // NEW: Animate Image from B&W to Color automatically
+          gsap.to(".bio-img", {
+              scrollTrigger: { 
+                  trigger: ".bio-section", 
+                  start: "top 70%" 
+              },
+              filter: "grayscale(0%) contrast(1)", // Smoothly remove grayscale
+              duration: 2.5,                       // Slow, cinematic fade (2.5s)
+              ease: "power2.out",
+              delay: 0.5                           // Wait 0.5s after card appears
+          });
+
+          // 3. Info Grid & Pills (Explicitly animate from hidden)
+          gsap.set(".info-grid", { opacity: 0, y: 30 });
+          gsap.set(".tech-pill", { opacity: 0, y: 10 });
+
+          gsap.to(".info-grid", {
+              scrollTrigger: { trigger: ".info-grid", start: "top 85%" },
+              opacity: 1, y: 0, duration: 1
+          });
+          
+          gsap.to(".tech-pill", {
+              scrollTrigger: { trigger: ".info-grid", start: "top 85%" },
+              y: 0, opacity: 1, duration: 0.5, stagger: 0.05, ease: "power2.out"
+          });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Don't let Google index the error or success pages
+Disallow: /404.html
+Disallow: /success.html
+
+# Helps Google find all your pages
+Sitemap: https://swayampurwar.vercel.app/sitemap.xml
