@@ -1,6 +1,6 @@
 {
-  "name": "Swayam Dev",
-  "short_name": "Swayam",
+  "name": "Tanishq Manglore . DEV",
+  "short_name": "Tanishq . DEV",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#050505",
@@ -13,7 +13,7 @@
       "type": "image/webp"
     },
     {
-      "src": "assets/images/favicon.webp",
+      "src": "assets/images/logo.webp",
       "sizes": "512x512",
       "type": "image/webp"
     }
