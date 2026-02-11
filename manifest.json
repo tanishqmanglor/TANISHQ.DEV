@@ -8,12 +8,12 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "assets/images/logo.webp",
+      "src": "assets/images/portfolio_tanishq.webp",
       "sizes": "192x192",
       "type": "image/webp"
     },
     {
-      "src": "assets/images/logo.webp",
+      "src": "assets/images/portfolio_tanishq.webp",
       "sizes": "512x512",
       "type": "image/webp"
     }
